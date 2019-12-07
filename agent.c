@@ -37,13 +37,13 @@ strcpy(h.fonction,a.fonction);
 strcpy(h.telephone,a.telephone);
 strcpy(h.salair,a.salair);
 strcpy(h.civilite,a.civilite);
-f1=fopen("/home/smir/Projects/project3/src/agent.txt","r");
+f1=fopen("agent.txt","r");
 while (fscanf(f1,"%d %s %s %d/%d/%d %d %s %s %s %d/%d/%d %s %s\n",&a.matricule,a.nom,a.prenom,&a.naissance.jour,&a.naissance.mois,&a.naissance.annee,&a.cin,a.adresse,a.fonction,a.telephone,&a.embauche.jour,&a.embauche.mois,&a.embauche.annee,a.salair,a.civilite)!=EOF){
 if(i<=a.matricule)
 i=a.matricule;}
 fclose(f1);
-f=fopen("/home/smir/Projects/project3/src/agent.txt","a+");
-f1=fopen("/home/smir/Projects/project3/src/utlisateur.txt","a+");
+f=fopen("agent.txt","a+");
+f1=fopen("utlisateur.txt","a+");
 if(f!=NULL)
 {fprintf(f,"%d %s %s %d/%d/%d %d %s %s %s %d/%d/%d %s %s\n",i+1,h.nom,h.prenom,h.naissance.jour,h.naissance.mois,h.naissance.annee,h.cin,h.adresse,h.fonction,h.telephone,h.embauche.jour,h.embauche.mois,h.embauche.annee,h.salair,h.civilite);
 fprintf(f1,"%s %s %d \n",a.nom,a.prenom,x);
@@ -124,12 +124,12 @@ column=gtk_tree_view_column_new_with_attributes(" civilite",renderer,"text",CIVI
 gtk_tree_view_append_column(GTK_TREE_VIEW (liste),column);
 
 store=gtk_list_store_new(COLUMNS, G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING);
-f=fopen("/home/smir/Projects/project3/src/agent.txt","r");
+f=fopen("agent.txt","r");
 if(f==NULL)
 {return ;
 }
 else
-{fclose(f);f=fopen("/home/smir/Projects/project3/src/agent.txt","a+");
+{fclose(f);f=fopen("agent.txt","a+");
 while(fscanf(f,"%d %s %s %d/%d/%d %d %s %s %s %d/%d/%d %s %s\n",&a.matricule,a.nom,a.prenom,&a.naissance.jour,&a.naissance.mois,&a.naissance.annee,&a.cin,a.adresse,a.fonction,a.telephone,&a.embauche.jour,&a.embauche.mois,&a.embauche.annee,a.salair,a.civilite)!=EOF)
 {sprintf(naisance,"%d/%d/%d",a.naissance.jour,a.naissance.mois,a.naissance.annee);
 sprintf(ambauche,"%d/%d/%d",a.embauche.jour,a.embauche.mois,a.embauche.annee);
@@ -143,17 +143,17 @@ g_object_unref(store);}
 void supprimeragent(int supagent,Agent a)
 {FILE *f,*h;
 
-f=fopen("/home/smir/Projects/project3/src/agent.txt","r");
+f=fopen("agent.txt","r");
 if (f!=NULL)
-{h=fopen("/home/smir/Projects/project3/src/agents.txt","w+");
+{h=fopen("agents.txt","w+");
 while(fscanf(f,"%d %s %s %d/%d/%d %d %s %s %s %d/%d/%d %s %s\n",&a.matricule,a.nom,a.prenom,&a.naissance.jour,&a.naissance.mois,&a.naissance.annee,&a.cin,a.adresse,a.fonction,a.telephone,&a.embauche.jour,&a.embauche.mois,&a.embauche.annee,a.salair,a.civilite)!=EOF)
 if(a.matricule!=supagent)
 fprintf(h,"%d %s %s %d/%d/%d %d %s %s %s %d/%d/%d %s %s\n",a.matricule,a.nom,a.prenom,a.naissance.jour,a.naissance.mois,a.naissance.annee,a.cin,a.adresse,a.fonction,a.telephone,a.embauche.jour,a.embauche.mois,a.embauche.annee,a.salair,a.civilite);
 }else printf("File not opened");
 fclose(h);
 fclose(f);
-f=fopen("/home/smir/Projects/project3/src/agent.txt","w+");
-h=fopen("/home/smir/Projects/project3/src/agents.txt","r");
+f=fopen("agent.txt","w+");
+h=fopen("agents.txt","r");
 while(fscanf(h,"%d %s %s %d/%d/%d %d %s %s %s %d/%d/%d %s %s\n",&a.matricule,a.nom,a.prenom,&a.naissance.jour,&a.naissance.mois,&a.naissance.annee,&a.cin,a.adresse,a.fonction,a.telephone,&a.embauche.jour,&a.embauche.mois,&a.embauche.annee,a.salair,a.civilite)!=EOF)
 
 fprintf(f,"%d %s %s %d/%d/%d %d %s %s %s %d/%d/%d %s %s\n",a.matricule,a.nom,a.prenom,a.naissance.jour,a.naissance.mois,a.naissance.annee,a.cin,a.adresse,a.fonction,a.telephone,a.embauche.jour,a.embauche.mois,a.embauche.annee,a.salair,a.civilite);
@@ -177,10 +177,10 @@ strcpy(h.salair,a.salair);
 strcpy(h.civilite,a.civilite);
 
 if(f!=NULL){
-f=fopen("/home/smir/Projects/project3/src/agent.txt","r");
+f=fopen("agent.txt","r");
 while (fscanf(f,"%d %s %s %d/%d/%d %d %s %s %s %d/%d/%d %s %s\n",&a.matricule,a.nom,a.prenom,&a.naissance.jour,&a.naissance.mois,&a.naissance.annee,&a.cin,a.adresse,a.fonction,a.telephone,&a.embauche.jour,&a.embauche.mois,&a.embauche.annee,a.salair,a.civilite)!=EOF){if (i==a.matricule) supprimeragent(i,a);}
 fclose(f);}
-f=fopen("/home/smir/Projects/project3/src/agent.txt","a+");
+f=fopen("agent.txt","a+");
 fprintf(f,"%d %s %s %d/%d/%d %d %s %s %s %d/%d/%d %s %s\n",h.matricule,h.nom,h.prenom,h.naissance.jour,h.naissance.mois,h.naissance.annee,h.cin,h.adresse,h.fonction,h.telephone,h.embauche.jour,h.embauche.mois,h.embauche.annee,h.salair,h.civilite);
 fclose(f);}
 
@@ -190,7 +190,7 @@ int verifagent(int x,Agent a)
 {
 FILE *f;
 int e=0;
-f=fopen("/home/smir/Projects/project3/src/agent.txt","r");
+f=fopen("agent.txt","r");
 if(f!=NULL){
 while (fscanf(f,"%d %s %s %d/%d/%d %d %s %s %s %d/%d/%d %s %s \n",&a.matricule,a.nom,a.prenom,&a.naissance.jour,&a.naissance.mois,&a.naissance.annee,&a.cin,a.adresse,a.fonction,a.telephone,&a.embauche.jour,&a.embauche.mois,&a.embauche.annee,a.salair,a.civilite)!=EOF)
 {if (x==a.matricule)

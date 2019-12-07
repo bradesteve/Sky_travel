@@ -96,3 +96,23 @@ on_buttonmodifieragent_clicked         (GtkButton       *button,
 void
 on_button_modifragent_clicked          (GtkButton       *button,
                                         gpointer         user_data);
+
+void
+on_buttonmofierhotel_clicked           (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_buttonmodifier_hotel_clicked        (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_button_retourlisteagent_clicked     (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_bouttonretourlisteconv_clicked      (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_buttonrelistehotel_clicked          (GtkButton       *button,
+                                        gpointer         user_data);

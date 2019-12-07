@@ -3,19 +3,19 @@ typedef struct{
 int j;
 int m;
 int a;
-}DATE
+}DATEH;
 typedef struct
 {
 int id;
 char lieu[20];
 char nom[20];
-DATE datedb ;
-DATE datefin;
+DATEH datedb ;
+DATEH datefin;
 int nbchambersing;
 int nbchamberdoubel;
 int nbchambertripl;
 }conshotel;
 
-void ajouter_hotel(conshotel hotel);
+void ajouter_hotel(conshotel h);
 void afficher_hotel(GtkWidget *liste);
-void supprimerhotel(char suphotel[20],conshotel hotel);
+void supprimerhotel(int suphotel,conshotel h);

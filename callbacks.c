@@ -19,7 +19,7 @@ on_button_ajouteragent_clicked         (GtkButton       *objet,
 {
 Agent a;
 GtkWidget *input1,*input2,*input31,*input32,*input33,*input4,*input5,*input6,*input7,*input81,*input82,*input83,*input9,*input10,*input11;
-GtkWidget *ajouter_agent;
+GtkWidget *ajouter_agent,*admin_agent,*treeview1;
 
 ajouter_agent=lookup_widget(objet,"ajouter_agent");
 
@@ -56,6 +56,15 @@ strcpy(a.civilite,gtk_entry_get_text(GTK_ENTRY(input10)));
 
 
 ajouteragent(a);
+gtk_widget_hide(ajouter_agent);
+admin_agent=lookup_widget(objet,"admin_agent");
+admin_agent=create_admin_agent();
+
+gtk_widget_show(admin_agent);
+
+treeview1=lookup_widget(admin_agent,"treeview1");
+
+afficher_agent(treeview1);
 }
 
 
@@ -91,7 +100,21 @@ void
 on_button_Quitter_clicked              (GtkButton       *button,
                                         gpointer         user_data)
 {
+GtkWidget *ajouter_agent;
+GtkWidget *admin_agent;
+GtkWidget *treeview1;
 
+ajouter_agent=lookup_widget(button,"ajouter_agent");
+
+
+gtk_widget_hide(ajouter_agent);
+admin_agent=lookup_widget(button,"admin_agent");
+admin_agent=create_admin_agent();
+
+gtk_widget_show(admin_agent);
+treeview1=lookup_widget(admin_agent,"treeview1");
+
+afficher_agent(treeview1);
 }
 
 
@@ -162,30 +185,38 @@ void
 on_buttonajouterhotel_clicked          (GtkButton       *objet,
                                         gpointer         user_data)
 {
-conshotel hotel;
+conshotel h;
 
-GtkWidget *input1, *input2, *input3,*input4,*input5,*input6,*input7;
+GtkWidget *input1, *input2, *input31,*input32,*input33,*input41,*input42,*input43,*input5,*input6,*input7;
 GtkWidget *ajouterhotel;
 
 ajouterhotel=lookup_widget(objet,"ajouterhotel");
 
 input1=lookup_widget(objet,"entrylocalisationhotel");
 input2=lookup_widget(objet,"entrynomhotel");
-input3=lookup_widget(objet,"entrydatedb");
-input4=lookup_widget(objet,"entrydatefin");
+input31=lookup_widget(objet,"spinbuttondbj");
+input32=lookup_widget(objet,"spinbuttondbm");
+input33=lookup_widget(objet,"spinbuttondba");
+input41=lookup_widget(objet,"spinbuttonfinj");
+input42=lookup_widget(objet,"spinbuttonfinm");
+input43=lookup_widget(objet,"spinbuttonfina");
 input5=lookup_widget(objet,"entrynbchombersing");
 input6=lookup_widget(objet,"entrynbchomberdoubel");
 input7=lookup_widget(objet,"entrynbchombertripl");
 
-strcpy(hotel.localisation,gtk_entry_get_text(GTK_ENTRY(input1)));
-strcpy(hotel.nom,gtk_entry_get_text(GTK_ENTRY(input2)));
-strcpy(hotel.datedb,gtk_entry_get_text(GTK_ENTRY(input3)));
-strcpy(hotel.datefin,gtk_entry_get_text(GTK_ENTRY(input4)));
-strcpy(hotel.nbchambersing,gtk_entry_get_text(GTK_ENTRY(input5)));
-strcpy(hotel.nbchamberdoubel,gtk_entry_get_text(GTK_ENTRY(input6)));
-strcpy(hotel.nbchambertripl,gtk_entry_get_text(GTK_ENTRY(input7)));
+strcpy(h.lieu,gtk_entry_get_text(GTK_ENTRY(input1)));
+strcpy(h.nom,gtk_entry_get_text(GTK_ENTRY(input2)));
+h.datedb.j=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(input31));
+h.datedb.m=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(input32));
+h.datedb.a=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(input33));
+h.datefin.j=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(input41));
+h.datefin.m=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(input42));
+h.datefin.a=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(input43));
+h.nbchambersing=atof(gtk_entry_get_text(GTK_ENTRY(input5)));
+h.nbchamberdoubel=atof(gtk_entry_get_text(GTK_ENTRY(input6)));
+h.nbchambertripl=atof(gtk_entry_get_text(GTK_ENTRY(input7)));
 
-ajouter_hotel(hotel);
+ajouter_hotel(h);
 
 }
 void
@@ -285,7 +316,7 @@ on_supritionhotel_clicked              (GtkButton       *button,
                                         gpointer         user_data)
 {
 GtkWidget *suprimhotel;
-GtkWidget *listehotel;
+GtkWidget *listehotel,*treeview2;
 GtkWidget *input;
 conshotel hotel;
 char nomhotel[20];
@@ -299,8 +330,10 @@ suprimhotel=lookup_widget(button,"suprimhotel");
 gtk_widget_hide(suprimhotel);
 listehotel=lookup_widget(button,"listehotel");
 listehotel=create_listehotel();
-
 gtk_widget_show(listehotel);
+treeview2=lookup_widget(listehotel,"treeview2");
+
+afficher_hotel(treeview2);
 }
 
 
@@ -447,7 +480,7 @@ gtk_widget_destroy(modifieragent);
 pmodifieragent=create_pmodifieragent();
 gtk_widget_show(pmodifieragent);
 
-f=fopen("/home/smir/Projects/project3/src/agent.txt","r");
+f=fopen("agent.txt","r");
 
 nomagent=lookup_widget(pmodifieragent,"entrynomagent");
 prenomagent=lookup_widget(pmodifieragent,"entryprenomagent");
@@ -468,7 +501,7 @@ if(f!=NULL)
 {while (fscanf(f,"%d %s %s %d/%d/%d %d %s %s %s %d/%d/%d %s %s\n",&a.matricule,a.nom,a.prenom,&a.naissance.jour,&a.naissance.mois,&a.naissance.annee,&a.cin,a.adresse,a.fonction,a.telephone,&a.embauche.jour,&a.embauche.mois,&a.embauche.annee,a.salair,a.civilite)!=EOF)
 {if(x==a.matricule)
 {
-h=fopen("/home/smir/Projects/project3/src/supid.txt","w+");
+h=fopen("supid.txt","w+");
 fprintf(h,"%d",a.matricule);
 fclose(h);
 gtk_entry_set_text(GTK_ENTRY(nomagent),a.nom);
@@ -538,22 +571,80 @@ a.embauche.jour=gtk_spin_button_get_value_as_int (GTK_SPIN_BUTTON(dateembauchj))
 a.embauche.mois=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(dateembauchm));
 a.embauche.annee=gtk_spin_button_get_value_as_int(GTK_SPIN_BUTTON(dateembaucha));
 if (h!=NULL)
-{h=fopen("/home/smir/Projects/project3/src/supid.txt","r");
+{h=fopen("supid.txt","r");
 while(fscanf(h,"%d\n",&id)!=EOF){
 x=id;}
 fclose(h);}
 supprimeragent(x,a);
 a.matricule=x;
-f=fopen("/home/smir/Projects/project3/src/agent.txt","a+");
+f=fopen("agent.txt","a+");
 fprintf(f,"%d %s %s %d/%d/%d %d %s %s %s %d/%d/%d %s %s\n",a.matricule,a.nom,a.prenom,a.naissance.jour,a.naissance.mois,a.naissance.annee,a.cin,a.adresse,a.fonction,a.telephone,a.embauche.jour,a.embauche.mois,a.embauche.annee,a.salair,a.civilite);
 
 fclose(f);
 pmodifieragent=lookup_widget(button,"pmodifieragent");
-gtk_widget_destroy(pmodifieragent);
+gtk_widget_hide(pmodifieragent);
 admin_agent=lookup_widget(button,"admin_agent");
 admin_agent=create_admin_agent();
 gtk_widget_show(admin_agent);
 treeview1=lookup_widget(admin_agent,"treeview1");
 afficher_agent(treeview1);
+}
+
+
+void
+on_buttonmofierhotel_clicked           (GtkButton       *button,
+                                        gpointer         user_data)
+{
+
+}
+
+
+void
+on_buttonmodifier_hotel_clicked        (GtkButton       *button,
+                                        gpointer         user_data)
+{
+
+}
+
+
+void
+on_button_retourlisteagent_clicked     (GtkButton       *button,
+                                        gpointer         user_data)
+{
+GtkWidget *admin_agent;
+GtkWidget *interface_admin;
+
+admin_agent=lookup_widget(button,"admin_agent");
+
+
+gtk_widget_hide(admin_agent);
+interface_admin=lookup_widget(button,"interface_admin");
+interface_admin=create_interface_admin();
+gtk_widget_show(interface_admin);
+}
+
+
+void
+on_bouttonretourlisteconv_clicked      (GtkButton       *button,
+                                        gpointer         user_data)
+{
+GtkWidget *admin_convention;
+GtkWidget *interface_admin;
+
+admin_convention=lookup_widget(button,"admin_convention");
+
+
+gtk_widget_hide(admin_convention);
+interface_admin=lookup_widget(button,"interface_admin");
+interface_admin=create_interface_admin();
+gtk_widget_show(interface_admin);
+}
+
+
+void
+on_buttonrelistehotel_clicked          (GtkButton       *button,
+                                        gpointer         user_data)
+{
+
 }
 

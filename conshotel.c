@@ -6,7 +6,7 @@
 
 enum{
 ID,
-Lieu,
+LIEU,
 NOM,
 DATEDB,
 DATEFIN,
@@ -18,6 +18,7 @@ COLUMNS};
 void ajouter_hotel(conshotel h)
 {FILE *f;
 conshotel b;
+int i=0;
 b.id=h.id;
 strcpy(b.lieu,h.lieu);
 strcpy(b.nom,h.nom);
@@ -25,14 +26,22 @@ b.datedb.j=h.datedb.j;
 b.datedb.m=h.datedb.m;
 b.datedb.a=h.datedb.a;
 b.datefin.j=h.datefin.j;
-b.datefin.m=b.datefin.a;
+b.datefin.m=h.datefin.m;
+b.datefin.a=h.datefin.a;
 b.nbchambersing=h.nbchambersing;
 b.nbchamberdoubel=h.nbchamberdoubel;
-b.nbchambertripl=b.nbchambertripl;
+b.nbchambertripl=h.nbchambertripl;
+
+f=fopen("listehotel.txt","r");
+while (fscanf(f,"%d %s %s %d/%d/%d %d/%d/%d %d %d %d \n",&h.id,h.lieu,h.nom,&h.datedb.j,&h.datedb.m,&h.datedb.a,&h.datefin.j,&h.datefin.m,&h.datefin.a,&h.nbchambersing,&h.nbchamberdoubel,&h.nbchambertripl)!=EOF){
+if(i<=h.id)
+i=h.id;}
+fclose(f);
+
 f=fopen("listehotel.txt","a+");
 if(f!=NULL)
 {
-fprintf(f,"%d %s %s %d/%d/%d %d/%d/%d %d %d %d \n",h.id,h.lieu,h.nom,h.datedb.j,h.datedb.m,h.datedb.a,h.datefin.j,h.datefin.m,h.datefin.a,h.nbchambersing,h.nbchamberdoubel,h.nbchambertripl);}
+fprintf(f,"%d %s %s %d/%d/%d %d/%d/%d %d %d %d\n",i+1,b.lieu,b.nom,b.datedb.j,b.datedb.m,b.datedb.a,b.datefin.j,b.datefin.m,b.datefin.a,b.nbchambersing,b.nbchamberdoubel,b.nbchambertripl);}
 fclose(f);}
 
 void afficher_hotel(GtkWidget *liste)
@@ -41,17 +50,18 @@ GtkCellRenderer *renderer;
 GtkTreeViewColumn *column;
 GtkTreeIter iter;
 GtkListStore *store;
-
+conshotel h;
 int id;
 char lieu[20];
 char nom[20];
-DATE datedb ;
-DATE datefin ;
+DATEH datedb ;
+DATEH datefin ;
 int nbchambersing;
 int nbchamberdoubel;
 int nbchambertripl;
 store=NULL;
 FILE *f;
+char db[20],fin[20];
 store=gtk_tree_view_get_model(liste);
 if (store==NULL)
 {
@@ -60,7 +70,7 @@ column=gtk_tree_view_column_new_with_attributes(" id",renderer, "text",ID, NULL)
 gtk_tree_view_append_column(GTK_TREE_VIEW(liste), column);
 
 renderer=gtk_cell_renderer_text_new();
-column=gtk_tree_view_column_new_with_attributes(" lieu",renderer, "text",Lieu, NULL);
+column=gtk_tree_view_column_new_with_attributes(" lieu",renderer, "text",LIEU, NULL);
 gtk_tree_view_append_column(GTK_TREE_VIEW(liste), column);
 
 renderer=gtk_cell_renderer_text_new();
@@ -97,11 +107,11 @@ return;
 }
 else
 {f=fopen("listehotel.txt","a+");
-while(fscanf(f,"%d %s %s %d/%d/%d %d/%d/%d %s %s %s \n",&h.id,h.lieu,h.nom,&h.datedb.j,&h.datedb.m,&h.datedb.a,&h.datefin.j,&h.datefin.m,&h.datefin.a,&nbchambersing,&nbchamberdoubel,&nbchambertripl)!=EOF)
+while(fscanf(f,"%d %s %s %d/%d/%d %d/%d/%d %d %d %d \n",&h.id,h.lieu,h.nom,&h.datedb.j,&h.datedb.m,&h.datedb.a,&h.datefin.j,&h.datefin.m,&h.datefin.a,&h.nbchambersing,&h.nbchamberdoubel,&h.nbchambertripl)!=EOF)
 {sprintf(db,"%d/%d/%d",h.datedb.j,h.datedb.m,h.datedb.a);
 sprintf(fin,"%d/%d/%d",h.datefin.j,h.datefin.m,h.datefin.a);
 gtk_list_store_append(store, &iter);
-gtk_list_store_set (store, &iter, ID, id, LIEU, lieu, NOM, nom, DATEDB, db,DATEFIN,fin,NBSING,nbchambersing,NBDOUB,nbchamberdoubel,NBTRIPL,nbchambertripl, -1);
+gtk_list_store_set (store, &iter, ID, h.id, LIEU, h.lieu, NOM, h.nom, DATEDB, db,DATEFIN,fin,NBSING,h.nbchambersing,NBDOUB,h.nbchamberdoubel,NBTRIPL,h.nbchambertripl, -1);
 }
 fclose(f);
 gtk_tree_view_set_model(GTK_TREE_VIEW(liste), GTK_TREE_MODEL(store));
@@ -109,20 +119,20 @@ g_object_unref(store);
 }
 }}
 void supprimerhotel(int suph,conshotel h)
-{FILE *f,*h;
+{FILE *f,*l;
 f=fopen("listehotel.txt","r");
 if (f!=NULL)
-{h=fopen("listehotels.txt","w+");
+{l=fopen("listehotels.txt","w+");
 while(fscanf(f,"%d %s %s %d/%d/%d %d/%d/%d %d %d %d \n",&h.id,h.lieu,h.nom,&h.datedb.j,&h.datedb.m,&h.datedb.a,&h.datefin.j,&h.datefin.m,&h.datefin.a,&h.nbchambersing,&h.nbchamberdoubel,&h.nbchambertripl)!=EOF)
 if(h.nom!=suph)
-fprintf(h,"%d %s %s %d/%d/%d %d/%d/%d %d %d %d \n",h.id,h.lieu,h.nom,h.datedb.j,h.datedb.m,h.datedb.a,h.datefin.j,h.datefin.m,h.datefin.a,h.nbchambersing,h.nbchamberdoubel,h.nbchambertripl);
+fprintf(l,"%d %s %s %d/%d/%d %d/%d/%d %d %d %d \n",h.id,h.lieu,h.nom,h.datedb.j,h.datedb.m,h.datedb.a,h.datefin.j,h.datefin.m,h.datefin.a,h.nbchambersing,h.nbchamberdoubel,h.nbchambertripl);
 }else printf("File not opened");
-fclose(h);
-fclose(f);
+fclose(l);
+fclose(l);
 f=fopen("listehotel.txt","w+");
-h=fopen("listehotels.txt","r");
-while(fscanf(h,"%d %s %s %d/%d/%d %d/%d/%d %d %d %d \n",&h.id,h.lieu,h.nom,&h.datedb.j,&h.datedb.m,&h.datedb.a,&h.datefin.j,&h.datefin.m,&h.datefin.a,&h.nbchambersing,&h.nbchamberdoubel,&h.nbchambertripl)!=EOF)
+l=fopen("listehotels.txt","r");
+while(fscanf(l,"%d %s %s %d/%d/%d %d/%d/%d %d %d %d \n",&h.id,h.lieu,h.nom,&h.datedb.j,&h.datedb.m,&h.datedb.a,&h.datefin.j,&h.datefin.m,&h.datefin.a,&h.nbchambersing,&h.nbchamberdoubel,&h.nbchambertripl)!=EOF)
 fprintf(f,"%d %s %s %d/%d/%d %d/%d/%d %d %d %d \n",h.id,h.lieu,h.nom,h.datedb.j,h.datedb.m,h.datedb.a,h.datefin.j,h.datefin.m,h.datefin.a,h.nbchambersing,h.nbchamberdoubel,h.nbchambertripl);
-fclose(h);fclose(f);
+fclose(l);fclose(f);
 }
 
