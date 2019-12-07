@@ -1,14 +1,19 @@
 #include <gtk/gtk.h>
-
+typedef struct{
+int j;
+int m;
+int a;
+}DATE
 typedef struct
 {
-char localisation[20];
+int id;
+char lieu[20];
 char nom[20];
-char datedb [20];
-char datefin [20];
-char nbchambersing[20];
-char nbchamberdoubel[20];
-char nbchambertripl[20];
+DATE datedb ;
+DATE datefin;
+int nbchambersing;
+int nbchamberdoubel;
+int nbchambertripl;
 }conshotel;
 
 void ajouter_hotel(conshotel hotel);

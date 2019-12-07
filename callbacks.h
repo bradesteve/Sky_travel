@@ -72,3 +72,27 @@ on_button_supprime_agent_clicked       (GtkButton       *button,
 void
 on_supritionaget_clicked               (GtkButton       *button,
                                         gpointer         user_data);
+
+void
+on_button_compteadmin_clicked          (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_button_modifer_admin_clicked        (GtkButton       *objet,
+                                        gpointer         user_data);
+
+void
+on_button_quitte_clicked               (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_button_modifier_agent_clicked       (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_buttonmodifieragent_clicked         (GtkButton       *button,
+                                        gpointer         user_data);
+
+void
+on_button_modifragent_clicked          (GtkButton       *button,
+                                        gpointer         user_data);
